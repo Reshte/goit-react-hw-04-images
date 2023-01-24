@@ -17,7 +17,7 @@ export function App() {
   const [isLoadmore, setIsLoadmore] = useState(false)
 
   const  handelFormSbmit = (searchQuery) => {
-    searchQuery.searchQuery.length > 0 ? setSearchQuery( searchQuery ):toast("Enter something")
+        searchQuery.length > 0 ? setSearchQuery( searchQuery ):toast("Enter something")
   }
 
   useEffect(() => { 

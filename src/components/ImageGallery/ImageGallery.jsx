@@ -1,47 +1,43 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem'
 import { Loader } from 'components/Loader/Loader'
 import { ImageGalleryList, Wrapper } from './ImageGallery.styled'
-import { Component } from "react";
 import { Modal } from 'components/Modal/Modal'
 import { PropTypes } from 'prop-types';
+import { useState } from 'react';
 
-export class ImageGallery extends Component {
-    state = {
-        showModal: false,
-        largeImage:'',
+export function ImageGallery({ gallery, loading }) {
+    const [showModal, setShowModal] = useState(false)
+    const [largeImage, setLargeImage] = useState('')
+    
+    const openModal = (largeImageURL) => {
+        setShowModal(true)
+        setLargeImage(largeImageURL)                       
     }
-    static propTypes = {
+
+     const  closeModal = () => {
+    setShowModal(false)
+    }
+
+    return (
+            <Wrapper>
+                <ImageGalleryList >
+                    {gallery.map(({ id, webformatURL, largeImageURL }) => (
+                        <ImageGalleryItem key={id} id={id} webformatURL={webformatURL} value={largeImageURL} modalShow={openModal}/>))}
+                </ImageGalleryList>
+                {loading && <Loader />}
+                {showModal && <Modal OnClose={closeModal}><img src={largeImage} alt="" />
+                </Modal>}
+            </Wrapper>
+        )
+}
+ImageGallery.propTypes = {
         gallery: PropTypes.array.isRequired,
         loading: PropTypes.bool.isRequired,
         showModal: PropTypes.bool,
         largeImage: PropTypes.string,
-         };
+         }
 
-    openModal = (largeImageURL) => {
-                  this.setState({
-            showModal: !this.state.showModal, largeImage: largeImageURL,
-        })
-    }
-    
-    closeModal = () => {
-    this.setState({showModal: false})
-    }
-  
-    render() {
-          const { gallery, loading }=this.props
-          const {showModal,  largeImage} = this.state
-        return (
-            <Wrapper>
-                <ImageGalleryList >
-                    {gallery.map(({ id, webformatURL, largeImageURL }) => (
-                        <ImageGalleryItem key={id} id={id} webformatURL={webformatURL} value={largeImageURL} modalShow={this.openModal}/>))}
-                </ImageGalleryList>
-                {loading && <Loader />}
-                {showModal && <Modal OnClose={this.closeModal}><img src={largeImage} alt="" />
-                </Modal>}
-            </Wrapper>
-        )
-    }
-    }
+
+
 
 

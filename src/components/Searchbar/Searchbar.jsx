@@ -1,35 +1,28 @@
-import { Component } from "react";
 import { Header, SearchForm, SearchFormButton, SearchFormInput } from './Searchbar.styled'
 import { AiOutlineSearch } from "react-icons/ai";
 import { PropTypes } from 'prop-types';
+import { useState } from "react";
 
-export class Searchbar extends Component {
-    state = {
-        searchQuery: '',
-  }
-  
- static propTypes = {
-        searchQuery: PropTypes.string,
-          };
 
-  handelInputChange = (e) => {
-    this.setState({searchQuery: e.currentTarget.value.trim()})  
-  }
+export function Searchbar({ onSubmit }) {
+  const [searchQuery, setSearchQuery] = useState('')
 
-  handelFormSbmit = (e) => {
+  const handelInputChange = (e) => {
+     setSearchQuery(e.currentTarget.value.trim())
+     }
+
+  const handelFormSbmit = (e) => {
     e.preventDefault()
-    this.props.onSubmit(this.state);
-    this.reset()
+    onSubmit(searchQuery);
+    reset()
   }
   
-  reset = () => {
-    this.setState({searchQuery: ''})
+ const reset = () => {
+    setSearchQuery('')
   }
-
-  render() {
-      return (
+ return (
     <Header >
-      <SearchForm onSubmit={this.handelFormSbmit} >
+      <SearchForm onSubmit={handelFormSbmit} >
           
           <SearchFormButton type="submit" className="button">
             <AiOutlineSearch size={20} />
@@ -43,11 +36,15 @@ export class Searchbar extends Component {
              name="searchQuery"
              autoFocus
              placeholder="Search images and photos"
-            value={this.state.searchQuery}
-            onChange={this.handelInputChange}
+            value={searchQuery}
+            onChange={handelInputChange}
     />
     </SearchForm>
   </Header>)
-        
-    }
+
 }
+Searchbar.propTypes = {
+        searchQuery: PropTypes.string,
+          };
+
+
