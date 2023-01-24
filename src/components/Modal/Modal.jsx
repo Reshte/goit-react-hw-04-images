@@ -5,11 +5,9 @@ import { useEffect } from 'react';
 const modalRoot=document.querySelector('#modal-root')
 
 export function Modal({ OnClose, children }) {
-// Не работает закрітие модалки по єскейпу
-    
+   
     useEffect(() => {
         const handelKeyDown = e => {
-            console.log(e)
             if (e.code === 'Escape') { OnClose() }
     }
         window.addEventListener('keydown', handelKeyDown)
