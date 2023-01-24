@@ -13,8 +13,9 @@ export function Modal({ OnClose, children }) {
             if (e.code === 'Escape') { OnClose() }
     }
         window.addEventListener('keydown', handelKeyDown)
-        return window.removeEventListener('keydown',handelKeyDown)
-     }, [OnClose])
+        return () => {
+        window.removeEventListener("keydown", handelKeyDown)}
+            }, [OnClose])
     
    
     
