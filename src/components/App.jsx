@@ -16,17 +16,23 @@ export function App() {
   const [loading, setLoading] = useState(false)
   const [isLoadmore, setIsLoadmore] = useState(false)
 
-  const  handelFormSbmit = (searchQuery) => {
-        searchQuery.length > 0 ? setSearchQuery( searchQuery ):toast("Enter something")
-  }
+  const handelFormSbmit = (searchQuery) => {
+    if( searchQuery.length > 0 )
+    { setGallery([])
+      setSearchQuery(searchQuery) 
+      setPage(1)} 
+    else{ toast("Enter something")}
+        }
 
   useEffect(() => { 
- (async function () {
-   try {
+    (async function () {
+    try {
      if (searchQuery !== '') {
-            const response = await requestApi(1, searchQuery);
-            if (response.hits.length > 0) {
-            setGallery([...response.hits])
+       setLoading(true)
+       setIsLoadmore(false)
+            const response = await requestApi(page, searchQuery);
+       if (response.hits.length > 0) {
+            setGallery(state =>[...state, ...response.hits])
             setLoading(false)
             setIsLoadmore(true)
             setTotalPages(response.totalHits)
@@ -38,27 +44,7 @@ export function App() {
             toast('Sorry, there are no images matching your search query. Please try again.')
             return
        }
-           
-        }
-      
-    } catch (e) {
-      console.log(e);
       }
-    })()
- 
-  }, [searchQuery])
-
-
-    useEffect(() => { 
- (async function () {
-   try {
-     if (searchQuery !== '') {
-          const response = await requestApi(page, searchQuery);
-          setLoading(true)
-          setGallery(state =>[...state, ...response.hits])
-          setLoading(false)
-          setIsLoadmore(true)           
-        }
       
     } catch (e) {
       console.log(e);
@@ -66,7 +52,6 @@ export function App() {
     })()
  
   }, [searchQuery, page])
-
   
  const LoadMore = () => {
    if (page < totalPages) { setPage(state => state + 1)} else {toast('Sorry, images are over')}

@@ -6,6 +6,7 @@ import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 
 export function ImageGallery({ gallery, loading }) {
+
     const [showModal, setShowModal] = useState(false)
     const [largeImage, setLargeImage] = useState('')
     
@@ -23,8 +24,8 @@ export function ImageGallery({ gallery, loading }) {
                 <ImageGalleryList >
                     {gallery.map(({ id, webformatURL, largeImageURL }) => (
                         <ImageGalleryItem key={id} id={id} webformatURL={webformatURL} value={largeImageURL} modalShow={openModal}/>))}
-                </ImageGalleryList>
-                {loading && <Loader />}
+            </ImageGalleryList>
+                   { loading && <Loader />}               
                 {showModal && <Modal OnClose={closeModal}><img src={largeImage} alt="" />
                 </Modal>}
             </Wrapper>
